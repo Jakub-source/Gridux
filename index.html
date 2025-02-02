@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link href="./styles.css" rel="stylesheet" />
+    <title>Electron Window</title>
+  </head>
+  <body>
+   
+
+    <div class="drag-region">
+      <div style="position: absolute; top: 13px; right: 32px; z-index: 999999;">
+        <button id="closeButton">X</button>
+    </div>
+
+      <button id="lock-button" style="display:block; margin-right: 10px;">
+        <!-- Lock icon (SVG) -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M12 3a4 4 0 0 0-4 4v3h12.5v12h-17V10H6V7a6 6 0 0 1 11.725-1.8l.3.954l-1.908.6l-.3-.954A4 4 0 0 0 12 3m-6.5 9v8h13v-8zM9 15h6v2H9z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span></span>
+      </button>
+      <div id="unlock-message">Ctrl + X to Unlock</div>
+      <div>
+        <h3 style="color: white;">
+          Grid <span style="padding-left: 4px; font-size: x-large; color: rgb(245, 151, 0);"> UX</span>
+        </h3>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: flex-end;">
+        <button style="display:block; margin-right: 10px; background-color: #282828;">
+          <div style="padding: 20px;"></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid-overlay"></div>
+
+    <div class="resize-indicator"></div>
+<div class="" style="position: fixed; padding: 10px; bottom: 0px; left: 0px; background-color: #444; color: white; border: none; z-index: 9999; display:flex;">
+  <button class="controls-btn" id="dropdown-button">
+    Grid Controls
+  </button>
+  <div style="padding-left: 12px;">
+    <label style="position: relative; display: inline-block;">
+      <!-- Actual colour picker (hidden) -->
+      <input
+          type="color"
+          id="grid-color-picker"
+          value="#429351"
+          style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              opacity: 0; 
+              cursor: pointer;
+          "
+      />
+      <div
+          style="
+              width: 28px;
+              height: 28px;
+              border-radius: 50%;
+              background-color: transparent;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+          "
+      >
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="25" viewBox="0 0 256 427"><path fill="#5a9ded" d="M256 241.65L128 426.8V322.457zm-67.84 65.08l-41.09 25.858v33.473z"/><path fill="#53d3e0" d="M0 241.65L128 426.8V322.457zm67.84 65.08l41.09 25.858v33.473z"/><path fill="#d995d1" d="m144.238 156.998l84.775 47.215l3.005 9.187l-10.094 8.812l-77.686-43.358z"/><path fill="#a6e276" d="m111.818 156.998l-84.775 47.215l-3.005 9.187l10.094 8.812l77.686-43.358z"/><path fill="#ff9c92" d="m128 0l128 219.203l-128 80.608zm18.904 70.317V266.03l83.622-52.631z"/><path fill="#ffe94d" d="M128 0L0 219.203l128 80.608zm-18.904 70.317V266.03L25.474 213.4z"/></svg>
+      </div>
+  </label>
+
+  </div>
+</div>
+  
+    
+
+    <div id="dropdown-menu" style="display: none; position: fixed; padding: 10px; bottom: 70px; left: 0px; background-color: #282828; width: 100%; z-index: 9999; border-radius: 5px;">
+      <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <label for="opacity-slider" style="color: white; font-size: 14px; margin-right: 10px;">Opacity:</label>
+        <input
+          type="range"
+          id="opacity-slider"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.2"
+          style="width: 120px; height: 4px; border-radius: 5px; background: #444; outline: none; cursor: pointer; transition: background 0.3s ease-in-out;"
+          oninput="updateSlider(this)"
+        />
+        <span id="opacity-percentage" style="color: white; font-size: 14px; margin-left: 10px;">20%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <label for="horizontal-slider" style="color: white; font-size: 14px; margin-right: 10px;">Horizontal Grids:</label>
+        <input
+          type="range"
+          id="horizontal-slider"
+          min="5"
+          max="50"
+          step="1"
+          value="20"
+          style="width: 120px; height: 4px; border-radius: 5px; background: #444; outline: none; cursor: pointer; transition: background 0.3s ease-in-out;"
+          oninput="updateGridCount(this, 'horizontal')"
+        />
+        <span id="horizontal-count" style="color: white; font-size: 14px; margin-left: 10px;">20</span>
+      </div>
+
+      <div style="display: flex; align-items: center;">
+        <label for="vertical-slider" style="color: white; font-size: 14px; margin-right: 10px;">Vertical Grids:</label>
+        <input
+          type="range"
+          id="vertical-slider"
+          min="5"
+          max="50"
+          step="1"
+          value="20"
+          style="width: 120px; height: 4px; border-radius: 5px; background: #444; outline: none; cursor: pointer; transition: background 0.3s ease-in-out;"
+          oninput="updateGridCount(this, 'vertical')"
+        />
+        <span id="vertical-count" style="color: white; font-size: 14px; margin-left: 10px;">20</span>
+      </div>
+     
+    </div>
+
+
+    <script>
+      function updateSlider(slider) {
+        slider.style.background = `linear-gradient(to right, #32CD32 ${(slider.value * 100)}%, #444 ${(slider.value * 100)}%)`;
+        const percentage = Math.round(slider.value * 100);
+        document.getElementById('opacity-percentage').textContent = `${percentage}%`;
+      }
+
+      function updateGridCount(slider, type) {
+        const countSpan = document.getElementById(`${type}-count`);
+        countSpan.textContent = slider.value;
+      }
+
+      document.getElementById('dropdown-button').addEventListener('click', function() {
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('opacity-slider');
+        updateSlider(slider); 
+      });
+    </script>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
