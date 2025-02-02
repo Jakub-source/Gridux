@@ -111,3 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set initial grid count
   updateGridOverlay();
 });
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('.grid-overlay').style.backgroundImage = `
+      linear-gradient(to right, rgb(255, 165, 0) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255, 165, 0) 1px, transparent 1px)
+  `;
+});
