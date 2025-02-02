@@ -1,8 +1,8 @@
-# electron-quick-start
+# Gridux (electron)
 
 **Clone and run for a quick way to see Electron in action.**
 
-This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/latest/tutorial/quick-start) within the Electron documentation.
+
 
 A basic Electron application needs just these files:
 
