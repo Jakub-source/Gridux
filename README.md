@@ -26,6 +26,11 @@ cd electron-quick-start
 npm install
 # Run the app
 npm start
+
+Builds:
+npm run build:mac -> Mac Os x
+npm run build:win -> Windows
+npm run build:linux -> Linux
 ```
 
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
